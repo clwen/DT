@@ -1,0 +1,4 @@
+# Position data for device 60 on 20110424
+# hhmmss.sss	hhmm	ss.sss	longitude	latitude	accuracy	session_id	leg distance	leg mps	bearing	total distance	total time	average mps
+121847.717	1218	47.717	3.308205162	49.85647136	25	3729	0	0	0	0	00:00:00.000	0
+121848.680	1218	48.680	3.308205162	49.85647136	25	3729	0.000	0.000	0.000	0	00:00:00.963	0.000
