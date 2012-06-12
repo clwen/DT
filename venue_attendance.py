@@ -1,4 +1,4 @@
-def point_inside_polygon(x, y, poly):
+def point_in_polygon(x, y, poly):
     n = len(poly)
     inside = False
 
@@ -20,7 +20,7 @@ def point_inside_polygon(x, y, poly):
 gps_fixes = []
 # open file
 lines = open('20110421/position/99.tsv').readlines()
-# discard first two lines, which is comment
+# discard first two lines, which are comments
 lines = lines[2:]
 # for each line
 for line in lines:
@@ -32,4 +32,16 @@ for line in lines:
 print gps_fixes
 
 # read all vertex from a specific geofences file first, say 15M Alladin
+poly = []
 # open file
+lines = open('Geofences/15M/15M Aladdin The Flying Carpet Over Agrabah.mif').readlines()
+# discard first 15 lines, which are comments
+lines = lines[15:]
+# for each line
+for line in lines:
+    # parse longitude, latitude pair
+    tokens = line.split()
+    lon, lat = tokens[0], tokens[1]
+    print lon, lat
+    poly.append((lon, lat))
+print poly
