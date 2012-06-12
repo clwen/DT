@@ -16,32 +16,38 @@ def point_in_polygon(x, y, poly):
 
     return inside
 
-# read gps fixes from a file first, say 20110421/99.tsv
-gps_fixes = []
-# open file
-lines = open('20110421/position/99.tsv').readlines()
-# discard first two lines, which are comments
-lines = lines[2:]
-# for each line
-for line in lines:
-    # parse lat, long pair
-    tokens = line.split()
-    lon, lat = tokens[3], tokens[4]
-    print lon, lat
-    gps_fixes.append((lon, lat))
-print gps_fixes
+if __name__ == '__main__':
+    # read gps fixes from a file first, say 20110421/99.tsv
+    gps_fixes = []
+    # open file
+    lines = open('20110421/position/99.tsv').readlines()
+    # discard first two lines, which are comments
+    lines = lines[2:]
+    # for each line
+    for line in lines:
+        # parse lat, long pair
+        tokens = line.split()
+        lon, lat = tokens[3], tokens[4]
+        gps_fixes.append((lon, lat))
+    print len(gps_fixes), gps_fixes
 
-# read all vertex from a specific geofences file first, say 15M Alladin
-poly = []
-# open file
-lines = open('Geofences/15M/15M Aladdin The Flying Carpet Over Agrabah.mif').readlines()
-# discard first 15 lines, which are comments
-lines = lines[15:]
-# for each line
-for line in lines:
-    # parse longitude, latitude pair
-    tokens = line.split()
-    lon, lat = tokens[0], tokens[1]
-    print lon, lat
-    poly.append((lon, lat))
-print poly
+    # read all vertex from a specific geofences file first, say 15M Alladin
+    poly = []
+    # open file
+    lines = open('Geofences/15M/15M Aladdin The Flying Carpet Over Agrabah.mif').readlines()
+    # discard first 15 lines, which are comments
+    lines = lines[15:]
+    # for each line
+    for line in lines:
+        # parse longitude, latitude pair
+        tokens = line.split()
+        lon, lat = tokens[0], tokens[1]
+        poly.append((lon, lat))
+    print len(poly), poly
+
+    # for each gps fixes
+    for gps_fix in gps_fixes:
+        x, y = gps_fix[0], gps_fix[1]
+        # test whether its inside the poly
+        inside = point_in_polygon(x, y, poly)
+        print x, y, inside
