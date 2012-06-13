@@ -1,6 +1,7 @@
 import os
 
-dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+# dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+dates = ['20110420', '20110421', '20110422']
 distances = ['0M', '5M', '10M', '15M']
 
 def point_in_polygon(x, y, poly):
@@ -88,4 +89,17 @@ def gps_in_venue(date, device, distance):
             of.write(oline)
 
 if __name__ == '__main__':
-    gps_in_venue('20110421', '17', '15M')
+    # for each date
+    for date in dates:
+        print 'date: %s' % date
+        # get all the device id under the date
+        date_folder = '%s/position/' % (date)
+        files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
+        devices = [f[:-4] for f in files]
+        # for each device, check whether gps fixes lie under geofences within distances defined
+        for device in devices:
+            print ' device: %s' % (device)
+            for distance in distances:
+                print '     distance: %s' % (distance)
+                gps_in_venue(date, device, distance)
+    # gps_in_venue('20110421', '17', '15M')
