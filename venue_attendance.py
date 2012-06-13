@@ -39,14 +39,10 @@ def read_gps_fixes_from_file(date, device):
     return gps_fixes
 
 def gps_in_venue(date, device, distance):
-    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
-    of = open(output_file, 'w')
     gps_fixes = read_gps_fixes_from_file(date, device)
 
     geofile_prefix = 'Geofences/%s/' % distance
     geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
-    # print geofiles
-
     polys = []
     venues = []
     for geofile in geofiles:
@@ -65,20 +61,22 @@ def gps_in_venue(date, device, distance):
             poly.append((lon, lat))
         polys.append(poly)
 
-    # for each gps fixes
-    for gps_fix in gps_fixes:
-        x, y = gps_fix[0], gps_fix[1]
-        # test whether its inside the poly
-        venues_attended = []
-        for i in range(len(polys)):
-            assert len(polys) == len(venues)
-            poly = polys[i]
-            venue = venues[i]
-            inside = point_in_polygon(x, y, poly)
-            if inside:
-                venues_attended.append(venue)
-        oline = '%s %s  %s\n' % (x, y, venues_attended)
-        of.write(oline)
+    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
+    with open(output_file, 'w') as of:
+        # for each gps fixes
+        for gps_fix in gps_fixes:
+            x, y = gps_fix[0], gps_fix[1]
+            # test whether its inside the poly
+            venues_attended = []
+            for i in range(len(polys)):
+                assert len(polys) == len(venues)
+                poly = polys[i]
+                venue = venues[i]
+                inside = point_in_polygon(x, y, poly)
+                if inside:
+                    venues_attended.append(venue)
+            oline = '%s %s  %s\n' % (x, y, venues_attended)
+            of.write(oline)
 
 if __name__ == '__main__':
     gps_in_venue('20110421', '17', '15M')
