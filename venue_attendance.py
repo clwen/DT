@@ -29,11 +29,11 @@ def point_in_polygon(x, y, poly):
 
     return inside
 
-if __name__ == '__main__':
-    # read gps fixes from a file first, say 20110421/99.tsv
+def gps_in_venue(gps_file, distance):
+    # read gps fixes from the file
     gps_fixes = []
     # open file
-    lines = open('20110421/position/17.tsv').readlines()
+    lines = open(gps_file).readlines()
     # discard first two lines, which are comments
     lines = lines[2:]
     # for each line
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         gps_fixes.append((lon, lat))
     print len(gps_fixes), gps_fixes
 
-    geofile_prefix = 'Geofences/15M/'
+    geofile_prefix = 'Geofences/%s/' % distance
     geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
     print geofiles
 
@@ -69,3 +69,6 @@ if __name__ == '__main__':
             # test whether its inside the poly
             inside = point_in_polygon(x, y, poly)
             print x, y, inside
+
+if __name__ == '__main__':
+    gps_in_venue('20110421/position/17.tsv', '15M')
