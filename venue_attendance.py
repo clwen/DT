@@ -15,14 +15,18 @@ def point_in_polygon(x, y, poly):
                 if x <= max(p1x, p2x):
                     if p1y != p2y:
                         xinters = (y-p1y) * (p2x-p1x) / (p2y-p1y) + p1x
-                        print x, xinters
                     if p1x == p2x or x <= xinters:
                         inside = not inside
         p1x, p1y = p2x, p2y
 
     return inside
 
-def gps_in_venue(gps_file, distance):
+# def read_gps_fixes_from_file(date, device):
+
+def gps_in_venue(date, device, distance):
+    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
+    of = open(output_file, 'w')
+    gps_file = '%s/position/%s.tsv' % (date, device)
     # read gps fixes from the file
     gps_fixes = []
     # open file
@@ -35,14 +39,15 @@ def gps_in_venue(gps_file, distance):
         tokens = line.split()
         lon, lat = float(tokens[3]), float(tokens[4])
         gps_fixes.append((lon, lat))
-    print len(gps_fixes), gps_fixes
 
     geofile_prefix = 'Geofences/%s/' % distance
     geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
-    print geofiles
+    # print geofiles
 
+    polys = []
+    venues = []
     for geofile in geofiles:
-        cur_venue = geofile[len(distance)+1:-4] # remove 'xxM' and '.mif'
+        venues.append(geofile[len(distance)+1:-4]) # remove 'xxM' and '.mif'
         # read all vertex from the geofences file
         poly = []
         # open file
@@ -55,17 +60,22 @@ def gps_in_venue(gps_file, distance):
             tokens = line.split()
             lon, lat = float(tokens[0]), float(tokens[1])
             poly.append((lon, lat))
-        print len(poly), poly
+        polys.append(poly)
 
-        # for each gps fixes
-        for gps_fix in gps_fixes:
-            x, y = gps_fix[0], gps_fix[1]
-            # test whether its inside the poly
+    # for each gps fixes
+    for gps_fix in gps_fixes:
+        x, y = gps_fix[0], gps_fix[1]
+        # test whether its inside the poly
+        venues_attended = []
+        for i in range(len(polys)):
+            assert len(polys) == len(venues)
+            poly = polys[i]
+            venue = venues[i]
             inside = point_in_polygon(x, y, poly)
             if inside:
-                print x, y, inside, cur_venue
-            else:
-                print x, y, inside
+                venues_attended.append(venue)
+        oline = '%s %s  %s\n' % (x, y, venues_attended)
+        of.write(oline)
 
 if __name__ == '__main__':
-    gps_in_venue('20110421/position/17.tsv', '15M')
+    gps_in_venue('20110421', '17', '15M')
