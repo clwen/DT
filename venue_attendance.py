@@ -18,7 +18,6 @@ def point_in_polygon(x, y, poly):
                     if p1x == p2x or x <= xinters:
                         inside = not inside
         p1x, p1y = p2x, p2y
-
     return inside
 
 def read_gps_fixes_from_file(date, device):
@@ -38,15 +37,19 @@ def read_gps_fixes_from_file(date, device):
         gps_fixes.append((lon, lat))
     return gps_fixes
 
-def gps_in_venue(date, device, distance):
-    gps_fixes = read_gps_fixes_from_file(date, device)
-
+def read_venue_names(distance):
+    venues = []
     geofile_prefix = 'Geofences/%s/' % distance
     geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
-    polys = []
-    venues = []
     for geofile in geofiles:
         venues.append(geofile[len(distance)+1:-4]) # remove 'xxM' and '.mif'
+    return venues
+
+def read_polys_from_files(distance):
+    polys = []
+    geofile_prefix = 'Geofences/%s/' % distance
+    geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
+    for geofile in geofiles:
         # read all vertex from the geofences file
         poly = []
         # open file
@@ -60,6 +63,12 @@ def gps_in_venue(date, device, distance):
             lon, lat = float(tokens[0]), float(tokens[1])
             poly.append((lon, lat))
         polys.append(poly)
+    return polys
+
+def gps_in_venue(date, device, distance):
+    gps_fixes = read_gps_fixes_from_file(date, device)
+    polys = read_polys_from_files(distance)
+    venues = read_venue_names(distance)
 
     output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
     with open(output_file, 'w') as of:
