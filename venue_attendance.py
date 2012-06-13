@@ -10,13 +10,6 @@ def point_in_polygon(x, y, poly):
     p1x,p1y = poly[0]
     for i in range(n+1):
         p2x, p2y = poly[i % n]
-        # print '==========================='
-        # print 'y: ' + y
-        # print 'min y: ' + min(p1y, p2y)
-        # print 'max y: ' + max(p1y, p2y)
-        # print 'x: ' + x
-        # print 'max x: ' + max(p1x, p2x)
-        # print '==========================='
         if y > min(p1y, p2y):
             if y <= max(p1y, p2y):
                 if x <= max(p1x, p2x):
@@ -49,7 +42,8 @@ def gps_in_venue(gps_file, distance):
     print geofiles
 
     for geofile in geofiles:
-        # read all vertex from a specific geofences file first, say 15M Alladin
+        cur_venue = geofile[len(distance)+1:-4] # remove 'xxM' and '.mif'
+        # read all vertex from the geofences file
         poly = []
         # open file
         lines = open(geofile_prefix + geofile).readlines()
@@ -68,7 +62,10 @@ def gps_in_venue(gps_file, distance):
             x, y = gps_fix[0], gps_fix[1]
             # test whether its inside the poly
             inside = point_in_polygon(x, y, poly)
-            print x, y, inside
+            if inside:
+                print x, y, inside, cur_venue
+            else:
+                print x, y, inside
 
 if __name__ == '__main__':
     gps_in_venue('20110421/position/17.tsv', '15M')
