@@ -21,16 +21,13 @@ def point_in_polygon(x, y, poly):
 
     return inside
 
-# def read_gps_fixes_from_file(date, device):
-
-def gps_in_venue(date, device, distance):
-    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
-    of = open(output_file, 'w')
+def read_gps_fixes_from_file(date, device):
     gps_file = '%s/position/%s.tsv' % (date, device)
     # read gps fixes from the file
     gps_fixes = []
     # open file
-    lines = open(gps_file).readlines()
+    with open(gps_file) as f:
+        lines = f.readlines()
     # discard first two lines, which are comments
     lines = lines[2:]
     # for each line
@@ -39,6 +36,12 @@ def gps_in_venue(date, device, distance):
         tokens = line.split()
         lon, lat = float(tokens[3]), float(tokens[4])
         gps_fixes.append((lon, lat))
+    return gps_fixes
+
+def gps_in_venue(date, device, distance):
+    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
+    of = open(output_file, 'w')
+    gps_fixes = read_gps_fixes_from_file(date, device)
 
     geofile_prefix = 'Geofences/%s/' % distance
     geofiles = [f for f in os.listdir(geofile_prefix) if f.endswith('.mif')]
