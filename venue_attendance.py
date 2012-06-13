@@ -1,5 +1,8 @@
 import os
 
+dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+distances = ['0M', '5M', '10M', '15M']
+
 def point_in_polygon(x, y, poly):
     n = len(poly)
     inside = False
@@ -30,14 +33,14 @@ if __name__ == '__main__':
     # read gps fixes from a file first, say 20110421/99.tsv
     gps_fixes = []
     # open file
-    lines = open('20110421/position/94.tsv').readlines()
+    lines = open('20110421/position/17.tsv').readlines()
     # discard first two lines, which are comments
     lines = lines[2:]
     # for each line
     for line in lines:
         # parse lat, long pair
         tokens = line.split()
-        lon, lat = tokens[3], tokens[4]
+        lon, lat = float(tokens[3]), float(tokens[4])
         gps_fixes.append((lon, lat))
     print len(gps_fixes), gps_fixes
 
@@ -56,7 +59,7 @@ if __name__ == '__main__':
         for line in lines:
             # parse longitude, latitude pair
             tokens = line.split()
-            lon, lat = tokens[0], tokens[1]
+            lon, lat = float(tokens[0]), float(tokens[1])
             poly.append((lon, lat))
         print len(poly), poly
 
