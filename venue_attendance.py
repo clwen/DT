@@ -1,8 +1,8 @@
 import os
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-# dates = ['20110420', '20110421', '20110422']
-dates = ['20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+dates = ['20110420']
+# dates = ['20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
 
 def point_in_polygon(x, y, poly):
@@ -39,6 +39,23 @@ def read_gps_fixes_from_file(date, device):
         gps_fixes.append((lon, lat))
     return gps_fixes
 
+def read_times_from_file(date, device):
+    gps_file = '%s/position/%s.tsv' % (date, device)
+    # read gps fixes from the file
+    times = []
+    # open file
+    with open(gps_file) as f:
+        lines = f.readlines()
+    # discard first two lines, which are comments
+    lines = lines[2:]
+    # for each line
+    for line in lines:
+        # parse lat, long pair
+        tokens = line.split()
+        time = str(tokens[0])
+        times.append(time)
+    return times
+
 def read_venue_names(distance):
     venues = []
     geofile_prefix = 'Geofences/%s/' % distance
@@ -69,24 +86,27 @@ def read_polys_from_files(distance):
 
 def gps_in_venue(date, device, distance):
     gps_fixes = read_gps_fixes_from_file(date, device)
+    times = read_times_from_file(date, device)
     polys = read_polys_from_files(distance)
     venues = read_venue_names(distance)
 
     output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
     with open(output_file, 'w') as of:
         # for each gps fixes
-        for gps_fix in gps_fixes:
+        for i in range(len(gps_fixes)):
+            gps_fix = gps_fixes[i]
+            time = times[i]
             x, y = gps_fix[0], gps_fix[1]
             # test whether its inside the poly
             venues_attended = []
-            for i in range(len(polys)):
+            for j in range(len(polys)):
                 assert len(polys) == len(venues)
-                poly = polys[i]
-                venue = venues[i]
+                poly = polys[j]
+                venue = venues[j]
                 inside = point_in_polygon(x, y, poly)
                 if inside:
                     venues_attended.append(venue)
-            oline = '%s %s  %s\n' % (x, y, venues_attended)
+            oline = '%s %s %s  %s\n' % (time, x, y, venues_attended)
             of.write(oline)
 
 if __name__ == '__main__':
@@ -99,8 +119,7 @@ if __name__ == '__main__':
         devices = [f[:-4] for f in files]
         # for each device, check whether gps fixes lie under geofences within distances defined
         for device in devices:
-            print ' device: %s' % (device)
+            print '     device: %s' % (device)
             for distance in distances:
-                print '     distance: %s' % (distance)
+                # print '     distance: %s' % (distance)
                 gps_in_venue(date, device, distance)
-    # gps_in_venue('20110421', '17', '15M')
