@@ -1,2 +1,22 @@
-# Venue Name	5M polygon	10M polygon 	15M polygon
-Space Mountain
+#"#Id"	"#Name"	"#VertexCount"	"#Area"	"Venue"	"GeofenceDistance"	"VenueType"	"MinToAttend"
+1940410224	"Front Gate"	13	-134.680836	"Front Gate"	0	""	10
+1932002528	"Guest Services"	51	1225.770317	"Guest Services"	0	""	10
+1933016144	"Studios Store"	21	1040.607914	"Studios Store"	0	"Merchandise"	10
+1932650208	"Cinemagique"	17	-2485.177142	"Cinemagique"	0	""	10
+1933140608	"En Coulisse & Legends of Hollywood"	14	3928.240254	"En Coulisse & Legends of Hollywood"	0	""	10
+1932280560	"Animagique"	8	1742.383445	"Animagique"	0	""	10
+1939678496	"Aladdin The Flying Carpet Over Agrabah"	24	-722.858651	"Aladdin The Flying Carpet Over Agrabah"	0	""	10
+1939646768	"Art of Disney Animation"	57	2263.756083	"Art of Disney Animation"	0	""	10
+1341944624	"Cars Quatre Roues Rallye"	28	-604.104764	"Cars Quatre Roues Rallye"	0	""	10
+1289835072	"Crush's Coaster"	10	-2773.779200	"Crush's Coaster"	0	"Thrill Ride"	10
+1406003120	"RC Racer"	9	-635.312562	"RC Racer"	0	"Kid Ride"	10
+1405973936	"Slinky Dog Zig Zag Spin"	18	246.462511	"Slinky Dog Zig Zag Spin"	0	"Kid Ride"	10
+1405945280	"Toy Soldiers Parachute Drop"	18	101.373082	"Toy Soldiers Parachute Drop"	0	"Kid Ride"	10
+1405930480	"Food & Beverage"	6	999.356260	"Food & Beverage"	0	"Food & Beverage"	10
+1405918992	"Studio Tram Tour"	8	666.629490	"Studio Tram Tour"	0	""	10
+1405890640	"Tower of Terror"	14	-2451.399356	"Tower of Terror"	0	"Thrill Ride"	10
+1405884592	"Snitch Live, Playhouse Disney"	32	3560.949645	"Snitch Live, Playhouse Disney"	0	"Show"	10
+1405875056	"Backlot Express"	39	3000.449652	"Backlot Express"	0	"Food & Beverage"	10
+1405856048	"Rock'n Roller Coaster"	30	-6303.226467	"Rock'n Roller Coaster"	0	"Thrill Ride"	10
+1405820896	"Armageddon"	8	1402.979875	"Armageddon"	0	""	10
+1405804464	"Moteurs Action"	35	15823.925829	"Moteurs Action"	0	"Show"	10
