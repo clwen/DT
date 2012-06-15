@@ -1,7 +1,7 @@
 import os
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-dates = ['20110421']
+dates = ['20110420']
 # dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
 
@@ -11,12 +11,13 @@ class GPSFix:
         self.time = time
         self.lon = lon
         self.lat = lat
+        venues_inside = []
 
-    def update_inside_venue(self, venue_lst):
-        self.inside_venue = venue_lst
+    def update_venues_inside(self, venue_lst):
+        self.venues_inside = venue_lst
 
     def __str__(self):
-        return "%s  %s  %s" % (self.time, self.lon, self.lat)
+        return "%s  %s  %s  %s" % (self.time, self.lon, self.lat, self.venues_inside)
 
 def point_in_polygon(x, y, poly):
     n = len(poly)
@@ -106,22 +107,24 @@ def gps_in_venue(date, device, distance):
 
     output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
     with open(output_file, 'w') as of:
+        of.write('# hhmmss.sss   longitude   latitude    venues_inside\n')
         # for each gps fixes
         for i in range(len(gps_fixes)):
             gps_fix = gps_fixes[i]
             time = gps_fix.time
             x, y = gps_fix.lon, gps_fix.lat
             # test whether its inside the poly
-            venues_attended = []
+            venues_inside = []
             for j in range(len(polys)):
                 assert len(polys) == len(venues)
                 poly = polys[j]
                 venue = venues[j]
                 inside = point_in_polygon(x, y, poly)
                 if inside:
-                    venues_attended.append(venue)
-            oline = '%s %s %s  %s\n' % (time, x, y, venues_attended)
-            of.write(oline)
+                    venues_inside.append(venue)
+            # update venues inside information in object
+            gps_fix.update_venues_inside(venues_inside)
+            of.write(str(gps_fix) + '\n')
 
 if __name__ == '__main__':
     # for each date
