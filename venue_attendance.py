@@ -1,9 +1,22 @@
 import os
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-dates = ['20110420']
-# dates = ['20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+dates = ['20110421']
+# dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
+
+class GPSFix:
+
+    def __init__(self, time, lon, lat):
+        self.time = time
+        self.lon = lon
+        self.lat = lat
+
+    def update_inside_venue(self, venue_lst):
+        self.inside_venue = venue_lst
+
+    def __str__(self):
+        return "%s  %s  %s" % (self.time, self.lon, self.lat)
 
 def point_in_polygon(x, y, poly):
     n = len(poly)
@@ -35,8 +48,9 @@ def read_gps_fixes_from_file(date, device):
     for line in lines:
         # parse lat, long pair
         tokens = line.split()
-        lon, lat = float(tokens[3]), float(tokens[4])
-        gps_fixes.append((lon, lat))
+        time, lon, lat = str(tokens[0]), float(tokens[3]), float(tokens[4])
+        gps_fix = GPSFix(time, lon, lat)
+        gps_fixes.append(gps_fix)
     return gps_fixes
 
 def read_times_from_file(date, device):
@@ -86,7 +100,7 @@ def read_polys_from_files(distance):
 
 def gps_in_venue(date, device, distance):
     gps_fixes = read_gps_fixes_from_file(date, device)
-    times = read_times_from_file(date, device)
+    # times = read_times_from_file(date, device)
     polys = read_polys_from_files(distance)
     venues = read_venue_names(distance)
 
@@ -95,8 +109,8 @@ def gps_in_venue(date, device, distance):
         # for each gps fixes
         for i in range(len(gps_fixes)):
             gps_fix = gps_fixes[i]
-            time = times[i]
-            x, y = gps_fix[0], gps_fix[1]
+            time = gps_fix.time
+            x, y = gps_fix.lon, gps_fix.lat
             # test whether its inside the poly
             venues_attended = []
             for j in range(len(polys)):
@@ -123,3 +137,4 @@ if __name__ == '__main__':
             for distance in distances:
                 # print '     distance: %s' % (distance)
                 gps_in_venue(date, device, distance)
+    # gps_in_venue('20110421', '17', '15M')
