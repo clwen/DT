@@ -1,6 +1,6 @@
 import os
 
-# dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 dates = ['20110420']
 # dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
@@ -105,7 +105,7 @@ def gps_in_venue(date, device, distance):
     polys = read_polys_from_files(distance)
     venues = read_venue_names(distance)
 
-    output_file = 'VenueAttendance/%s/%s/%s.txt' % (date, distance, device)
+    output_file = 'GPSInsideVenue/%s/%s/%s.txt' % (date, distance, device)
     with open(output_file, 'w') as of:
         of.write('# hhmmss.sss   longitude   latitude    venues_inside\n')
         # for each gps fixes
@@ -140,4 +140,6 @@ if __name__ == '__main__':
             for distance in distances:
                 # print '     distance: %s' % (distance)
                 gps_in_venue(date, device, distance)
+
+    # NOTE: for single shot testing
     # gps_in_venue('20110421', '17', '15M')
