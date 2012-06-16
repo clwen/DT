@@ -1,23 +1,10 @@
 import os
+from gps_fix import *
 
 dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 dates = ['20110420']
 # dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
-
-class GPSFix:
-
-    def __init__(self, time, lon, lat):
-        self.time = time
-        self.lon = lon
-        self.lat = lat
-        venues_inside = []
-
-    def update_venues_inside(self, venue_lst):
-        self.venues_inside = venue_lst
-
-    def __str__(self):
-        return "%s  %s  %s  %s" % (self.time, self.lon, self.lat, self.venues_inside)
 
 def point_in_polygon(x, y, poly):
     n = len(poly)
@@ -128,18 +115,18 @@ def gps_in_venue(date, device, distance):
 
 if __name__ == '__main__':
     # for each date
-    for date in dates:
-        print 'date: %s' % date
-        # get all the device id under the date
-        date_folder = '%s/position/' % (date)
-        files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
-        devices = [f[:-4] for f in files]
-        # for each device, check whether gps fixes lie under geofences within distances defined
-        for device in devices:
-            print '     device: %s' % (device)
-            for distance in distances:
-                # print '     distance: %s' % (distance)
-                gps_in_venue(date, device, distance)
+    # for date in dates:
+    #     print 'date: %s' % date
+    #     # get all the device id under the date
+    #     date_folder = '%s/position/' % (date)
+    #     files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
+    #     devices = [f[:-4] for f in files]
+    #     # for each device, check whether gps fixes lie under geofences within distances defined
+    #     for device in devices:
+    #         print '     device: %s' % (device)
+    #         for distance in distances:
+    #             # print '     distance: %s' % (distance)
+    #             gps_in_venue(date, device, distance)
 
     # NOTE: for single shot testing
-    # gps_in_venue('20110421', '17', '15M')
+    gps_in_venue('20110421', '17', '15M')
