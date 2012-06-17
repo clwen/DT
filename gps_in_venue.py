@@ -1,4 +1,5 @@
 import os
+import simplejson as json
 from gps_fix import *
 
 dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
@@ -88,13 +89,11 @@ def read_polys_from_files(distance):
 
 def gps_in_venue(date, device, distance):
     gps_fixes = read_gps_fixes_from_file(date, device)
-    # times = read_times_from_file(date, device)
     polys = read_polys_from_files(distance)
     venues = read_venue_names(distance)
 
-    output_file = 'GPSInsideVenue/%s/%s/%s.txt' % (date, distance, device)
+    output_file = 'GPSInsideVenue/%s/%s/%s.json' % (date, distance, device)
     with open(output_file, 'w') as of:
-        of.write('# hhmmss.sss   longitude   latitude    venues_inside\n')
         # for each gps fixes
         for i in range(len(gps_fixes)):
             gps_fix = gps_fixes[i]
@@ -110,23 +109,23 @@ def gps_in_venue(date, device, distance):
                 if inside:
                     venues_inside.append(venue)
             # update venues inside information in object
-            gps_fix.update_venues_inside(venues_inside)
-            of.write(str(gps_fix) + '\n')
+            gps_fields = {'time': time, 'lon': x, 'lat': y, 'venues_inside': venues_inside}
+            of.write(json.dumps(gps_fields) + '\n')
 
 if __name__ == '__main__':
     # for each date
-    # for date in dates:
-    #     print 'date: %s' % date
-    #     # get all the device id under the date
-    #     date_folder = '%s/position/' % (date)
-    #     files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
-    #     devices = [f[:-4] for f in files]
-    #     # for each device, check whether gps fixes lie under geofences within distances defined
-    #     for device in devices:
-    #         print '     device: %s' % (device)
-    #         for distance in distances:
-    #             # print '     distance: %s' % (distance)
-    #             gps_in_venue(date, device, distance)
+    for date in dates:
+        print 'date: %s' % date
+        # get all the device id under the date
+        date_folder = '%s/position/' % (date)
+        files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
+        devices = [f[:-4] for f in files]
+        # for each device, check whether gps fixes lie under geofences within distances defined
+        for device in devices:
+            print '     device: %s' % (device)
+            for distance in distances:
+                # print '     distance: %s' % (distance)
+                gps_in_venue(date, device, distance)
 
     # NOTE: for single shot testing
-    gps_in_venue('20110421', '17', '15M')
+    # gps_in_venue('20110421', '17', '15M')
