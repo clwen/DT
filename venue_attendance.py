@@ -16,8 +16,23 @@ class DeviceDatePair:
         self.distance = distance
         self.venues_attended = []
 
+    def end_time_fixes_that_contains_the_same_venue(self, i, venue):
+        print '%s   %s' % (i, venue)
+
     def parse_venue_attendance(self):
         print 'parse venue attendance'
+        # skip that gps fixes that are not inside any venue
+        for i in range(len(self.gps_fixes)):
+            if self.gps_fixes[i].venues_inside == []:
+                continue
+
+            for venue in self.gps_fixes[i].venues_inside:
+                start_time = self.gps_fixes[i].time
+                # find end time of consecutive fixes that contains the same venue
+                end_time = self.end_time_fixes_that_contains_the_same_venue(i, venue)
+
+                # if difference of start time, end time bigger than threshold, append to venues attended
+                # TODO: else, remove current venue in all consecutive fixes for speed up
 
     def output_venue_attendance(self):
         print 'output venue attendance'
