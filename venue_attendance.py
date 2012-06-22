@@ -5,8 +5,8 @@ except ImportError: import json
 from gps_fix import *
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-dates = ['20110421']
-# dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
+# dates = ['20110421']
+dates = ['20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
 
 threshold = 180 # attending venue if duration exceeds this threshold (in second)
@@ -27,13 +27,12 @@ class DeviceDatePair:
         self.venues_attended = []
 
     def end_time_fixes_that_contains_the_same_venue(self, i, venue):
-        if i == len(self.gps_fixes) - 2: # second last gps_fix it is
+        if i >= len(self.gps_fixes) - 1: # second last gps_fix it is
             return i, self.gps_fixes[i].time
 
         while venue in self.gps_fixes[i+1].venues_inside:
-            print i, len(self.gps_fixes)
-            if i == len(self.gps_fixes) - 2: # second last gps_fix it is
-                return i, self.gps_fixes[i].time
+            if i >= len(self.gps_fixes) - 2: # second last gps_fix it is
+                return i+1, self.gps_fixes[i+1].time
             else:
                 i = i+1
         return i, self.gps_fixes[i].time
