@@ -1,4 +1,5 @@
 import os
+import datetime
 import simplejson as json
 from gps_fix import *
 
@@ -6,6 +7,14 @@ from gps_fix import *
 dates = ['20110420']
 # dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
+
+threshold = 180 # attending venue if duration exceeds this threshold (in second)
+
+def time_diff(s1, s2):
+    start = datetime.datetime.strptime(s1[:6], '%H%M%S')
+    end = datetime.datetime.strptime(s2[:6], '%H%M%S')
+    delta = end - start
+    return delta.seconds
 
 class DeviceDatePair:
 
@@ -32,9 +41,14 @@ class DeviceDatePair:
                 start_time = self.gps_fixes[i].time
                 # find end time of consecutive fixes that contains the same venue
                 end_time = self.end_time_fixes_that_contains_the_same_venue(i, venue)
-                print i, venue, start_time, end_time
+                # print i, venue, start_time, end_time
 
                 # if difference of start time, end time bigger than threshold, append to venues attended
+                delta = time_diff(start_time, end_time)
+                if delta > threshold:
+                    print (venue, start_time, end_time)
+                    self.venues_attended.append((venue, start_time, end_time))
+
                 # TODO: else, remove current venue in all consecutive fixes for speed up
 
     def output_venue_attendance(self):
