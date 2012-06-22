@@ -57,8 +57,11 @@ class DeviceDatePair:
                 self.remove_venues_in_a_range(i, end_i, venue)
 
     def output_venue_attendance(self):
-        for venue in self.venues_attended:
-            print venue
+        filename = 'VenueAttendance/%s/%s/%s.json' % (self.date, self.distance, self.device)
+        with open(filename, 'w') as of:
+            for venue in self.venues_attended:
+                venue_fields = {'venue': venue[0], 'start': venue[1], 'end': venue[2]}
+                of.write(json.dumps(venue_fields) + '\n')
 
 def read_device_date_pair_from_file(date, device, distance):
     filename = 'GPSInsideVenue/%s/%s/%s.json' % (date, distance, device)
