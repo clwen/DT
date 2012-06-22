@@ -5,7 +5,7 @@ except ImportError: import json
 from gps_fix import *
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-dates = ['20110420']
+dates = ['20110421']
 # dates = ['20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
 distances = ['0M', '5M', '10M', '15M']
 
@@ -27,8 +27,15 @@ class DeviceDatePair:
         self.venues_attended = []
 
     def end_time_fixes_that_contains_the_same_venue(self, i, venue):
+        if i == len(self.gps_fixes) - 2: # second last gps_fix it is
+            return i, self.gps_fixes[i].time
+
         while venue in self.gps_fixes[i+1].venues_inside:
-            i = i+1
+            print i, len(self.gps_fixes)
+            if i == len(self.gps_fixes) - 2: # second last gps_fix it is
+                return i, self.gps_fixes[i].time
+            else:
+                i = i+1
         return i, self.gps_fixes[i].time
 
     def remove_venues_in_a_range(self, start, end, venue):
@@ -77,10 +84,19 @@ def read_device_date_pair_from_file(date, device, distance):
     return device_date_pair
 
 if __name__ == '__main__':
-    # read device date pair from file
-    device_date_pair = read_device_date_pair_from_file('20110421', '17', '15M')
-    # parse venue attendance
-    device_date_pair.parse_venue_attendance()
-    # output to file
-    device_date_pair.output_venue_attendance()
+    for date in dates:
+        print 'date: %s' % date
+        # get all the device id under the date
+        date_folder = '%s/position/' % (date)
+        files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
+        devices = [f[:-4] for f in files]
+        for device in devices:
+            print '     device: %s' % (device)
+            for distance in distances:
+                # read device date pair from file
+                device_date_pair = read_device_date_pair_from_file(date, device, distance)
+                # parse venue attendance
+                device_date_pair.parse_venue_attendance()
+                # output to file
+                device_date_pair.output_venue_attendance()
 
