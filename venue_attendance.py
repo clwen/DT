@@ -1,6 +1,7 @@
 import os
 import datetime
-import simplejson as json
+try: import simplejson as json
+except ImportError: import json
 from gps_fix import *
 
 # dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
@@ -28,10 +29,13 @@ class DeviceDatePair:
     def end_time_fixes_that_contains_the_same_venue(self, i, venue):
         while venue in self.gps_fixes[i+1].venues_inside:
             i = i+1
-        return self.gps_fixes[i].time
+        return i, self.gps_fixes[i].time
+
+    def remove_venues_in_a_range(self, start, end, venue):
+        for i in range(start, end+1):
+            self.gps_fixes[i].venues_inside.remove(venue)
 
     def parse_venue_attendance(self):
-        print 'parse venue attendance'
         # skip that gps fixes that are not inside any venue
         for i in range(len(self.gps_fixes)):
             if self.gps_fixes[i].venues_inside == []:
@@ -40,19 +44,21 @@ class DeviceDatePair:
             for venue in self.gps_fixes[i].venues_inside:
                 start_time = self.gps_fixes[i].time
                 # find end time of consecutive fixes that contains the same venue
-                end_time = self.end_time_fixes_that_contains_the_same_venue(i, venue)
-                # print i, venue, start_time, end_time
+                end_i, end_time = self.end_time_fixes_that_contains_the_same_venue(i, venue)
 
                 # if difference of start time, end time bigger than threshold, append to venues attended
                 delta = time_diff(start_time, end_time)
                 if delta > threshold:
-                    print (venue, start_time, end_time)
                     self.venues_attended.append((venue, start_time, end_time))
 
-                # TODO: else, remove current venue in all consecutive fixes for speed up
+                # remove current venue in all consecutive fixes for speed up
+                # if duration doesn't exceed threshold, no need to search more, since it will only be shorter
+                # if duration does exceed threshold, no need to search further, since only the longest one should be output
+                self.remove_venues_in_a_range(i, end_i, venue)
 
     def output_venue_attendance(self):
-        print 'output venue attendance'
+        for venue in self.venues_attended:
+            print venue
 
 def read_device_date_pair_from_file(date, device, distance):
     filename = 'GPSInsideVenue/%s/%s/%s.json' % (date, distance, device)
