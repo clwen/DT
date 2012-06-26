@@ -4,6 +4,9 @@ try: import simplejson as json
 except ImportError: import json
 from gps_fix import *
 
+path = ''
+distance = '15M'
+
 def point_in_polygon(x, y, poly):
     n = len(poly)
     inside = False
@@ -21,8 +24,8 @@ def point_in_polygon(x, y, poly):
         p1x, p1y = p2x, p2y
     return inside
 
-def read_gps_fixes_from_file(date, device):
-    gps_file = '%s/position/%s.tsv' % (date, device)
+def read_gps_fixes_from_file(device):
+    gps_file = '%s/%s.tsv' % (path, device)
     # read gps fixes from the file
     gps_fixes = []
     # open file
@@ -39,8 +42,8 @@ def read_gps_fixes_from_file(date, device):
         gps_fixes.append(gps_fix)
     return gps_fixes
 
-def read_times_from_file(date, device):
-    gps_file = '%s/position/%s.tsv' % (date, device)
+def read_times_from_file(device):
+    gps_file = '%s/%s.tsv' % (path, device)
     # read gps fixes from the file
     times = []
     # open file
@@ -84,12 +87,12 @@ def read_polys_from_files(distance):
         polys.append(poly)
     return polys
 
-def gps_in_venue(date, device, distance):
-    gps_fixes = read_gps_fixes_from_file(date, device)
+def gps_in_venue(device):
+    gps_fixes = read_gps_fixes_from_file(device)
     polys = read_polys_from_files(distance)
     venues = read_venue_names(distance)
 
-    output_file = 'GPSInsideVenue/%s/%s/%s.json' % (date, distance, device)
+    output_file = '%s/%s_pip.json' % (path, device)
     with open(output_file, 'w') as of:
         # for each gps fixes
         for i in range(len(gps_fixes)):
@@ -115,3 +118,4 @@ if __name__ == '__main__':
     devices = [f[:-4] for f in tsv_files]
     for device in devices:
         print device
+        gps_in_venue(device)
