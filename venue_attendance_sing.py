@@ -1,14 +1,12 @@
 import os
+import sys
 import datetime
 try: import simplejson as json
 except ImportError: import json
 from gps_fix import *
 
-dates = ['20110420', '20110421', '20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-# dates = ['20110421']
-# dates = ['20110422', '20110423', '20110424', '20110425', '20110426', '20110427', '20110428', '20110429', '20110430']
-distances = ['0M', '5M', '10M', '15M']
-
+path = ''
+distance = '15M'
 threshold = 180 # attending venue if duration exceeds this threshold (in second)
 
 def time_diff(s1, s2):
@@ -19,9 +17,8 @@ def time_diff(s1, s2):
 
 class DeviceDatePair:
 
-    def __init__(self, date, device, distance, gps_fixes):
+    def __init__(self, device, distance, gps_fixes):
         self.gps_fixes = gps_fixes
-        self.date = date
         self.device = device
         self.distance = distance
         self.venues_attended = []
@@ -63,14 +60,14 @@ class DeviceDatePair:
                 self.remove_venues_in_a_range(i, end_i, venue)
 
     def output_venue_attendance(self):
-        filename = 'VenueAttendance/%s/%s/%s.json' % (self.date, self.distance, self.device)
+        filename = '%s/%s_venue.json' % (path, device)
         with open(filename, 'w') as of:
             for venue in self.venues_attended:
                 venue_fields = {'venue': venue[0], 'start': venue[1], 'end': venue[2]}
                 of.write(json.dumps(venue_fields) + '\n')
 
-def read_device_date_pair_from_file(date, device, distance):
-    filename = 'GPSInsideVenue/%s/%s/%s.json' % (date, distance, device)
+def read_device_date_pair_from_file(device):
+    filename = '%s/%s_pip.json' % (path, device)
     gps_fixes = []
     with open(filename) as f:
         lines = f.readlines()
@@ -79,23 +76,18 @@ def read_device_date_pair_from_file(date, device, distance):
             # print gps_fields
             gps_fix = GPSFix(gps_fields['time'], gps_fields['lon'], gps_fields['lat'], gps_fields['venues_inside'])
             gps_fixes.append(gps_fix)
-    device_date_pair = DeviceDatePair(date, device, distance, gps_fixes)
+    device_date_pair = DeviceDatePair(device, distance, gps_fixes)
     return device_date_pair
 
 if __name__ == '__main__':
-    for date in dates:
-        print 'date: %s' % date
-        # get all the device id under the date
-        date_folder = '%s/position/' % (date)
-        files = [f for f in os.listdir(date_folder) if f.endswith('.tsv')]
-        devices = [f[:-4] for f in files]
-        for device in devices:
-            print '     device: %s' % (device)
-            for distance in distances:
-                # read device date pair from file
-                device_date_pair = read_device_date_pair_from_file(date, device, distance)
-                # parse venue attendance
-                device_date_pair.parse_venue_attendance()
-                # output to file
-                device_date_pair.output_venue_attendance()
-
+    path = sys.argv[1]
+    tsv_files = [f for f in os.listdir(path) if f.endswith('.tsv')]
+    devices = [f[:-4] for f in tsv_files]
+    for device in devices:
+        print device
+        # read device date pair from file
+        device_date_pair = read_device_date_pair_from_file(device)
+        # parse venue attendance
+        device_date_pair.parse_venue_attendance()
+        # output to file
+        device_date_pair.output_venue_attendance()
