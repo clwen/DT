@@ -3,6 +3,12 @@ import csv
 demo_reader = csv.reader(open('demographic/2011_am.csv'))
 header = demo_reader.next() # skip header
 
+resort_dic = {}
+next_available_rid = 1
+
+country_dic = {}
+next_available_cid = 1
+
 demo_groups = []
 for row in demo_reader:
     fields = []
@@ -25,6 +31,17 @@ for row in demo_reader:
         on_property = 0
     fields.append(on_property)
 
+    r = row[6]
+    if r == '':
+        resort_living = 0
+    elif r in resort_dic:
+        resort_living = resort_dic[r]
+    else:
+        resort_dic[r] = next_available_rid
+        next_available_rid += 1
+        resort_living = resort_dic[r]
+    fields.append(resort_living)
+
     if row[7] == 'Y':
         meal_plan = 1
     else:
@@ -44,6 +61,17 @@ for row in demo_reader:
     else:
         past_five_yr = 0
     fields.append(past_five_yr)
+
+    c = row[10]
+    if c == '':
+        country_living = 0
+    elif c in country_dic:
+        country_living = country_dic[c]
+    else:
+        country_dic[c] = next_available_cid # add new country to country_dic
+        next_available_cid += 1 # update next available country id
+        country_living = country_dic[c]
+    fields.append(country_living)
 
     if row[11] == '':
         person_in_grp = 1 # fail safe: default by 1
@@ -127,8 +155,74 @@ for row in demo_reader:
         thrill_rides = 0
     fields.append(thrill_rides)
 
+    if row[24] == 'Non-thrill rides':
+        non_thrill_rides = 1
+    else:
+        non_thrill_rides = 0
+    fields.append(non_thrill_rides)
+
+    if row[25] == 'Indoor shows':
+        indoor_shows = 1
+    else:
+        indoor_shows = 0
+    fields.append(indoor_shows)
+
+    if row[26] == 'Parades and fireworks':
+        parades = 1
+    else:
+        parades = 0
+    fields.append(parades)
+
+    if row[27] == 'Meeting characters':
+        characters = 1
+    else:
+        characters = 0
+    fields.append(characters)
+
+    if row[28] == 'Overall atmosphere':
+        atmosphere = 1
+    else:
+        atmosphere = 0
+    fields.append(atmosphere)
+
+    if row[29] == 'Definitely':
+        plan_for_day = 3
+    elif row[29] == 'Somewhat':
+        plan_for_day = 2
+    elif row[29] == 'Not really':
+        plan_for_day = 1
+    else:
+        plan_for_day = 0
+    fields.append(plan_for_day)
+
+    if row[30] == 'Y':
+        dining_plan = 1
+    else:
+        dining_plan = 0
+    fields.append(dining_plan)
+
+    if row[31] == 'Y':
+        must_see = 1
+    else:
+        must_see = 0
+    fields.append(must_see)
+
+    try:
+        wait_must_see = int(row[33])
+    except ValueError:
+        wait_must_see = 0 # default value if no input or ill-format input
+    fields.append(wait_must_see)
+
+    try:
+        wait_others = int(row[34])
+    except ValueError:
+        wait_others = 0 # default value if no input or ill-format input
+    fields.append(wait_others)
+
     demo_groups.append(fields)
 
 for group in demo_groups:
     print group
 
+print resort_dic
+print country_dic
