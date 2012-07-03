@@ -47,6 +47,7 @@ if __name__ == '__main__':
     for i in range(len(venues)):
         venue_dic[venues[i]] = i
 
+    attendances = []
     for row in demo_reader:
         # parse date
         try:
@@ -60,8 +61,12 @@ if __name__ == '__main__':
 
         device = row[2]
 
-        # print date, device
         print date, device
         attendance = read_attendance(date, device)
-        print attendance
+        attendances.append(attendance)
 
+    # output attendances data to file
+    att_writer = csv.writer(open('demographic/2011_att.csv', 'w'))
+    for att in attendances:
+        print att
+        att_writer.writerow(att)

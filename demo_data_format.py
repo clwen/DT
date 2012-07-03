@@ -221,8 +221,9 @@ for row in demo_reader:
 
     demo_groups.append(fields)
 
+# output vectors to file
+demo_writer = csv.writer(open('demographic/2011_demo.csv', 'w'))
 for group in demo_groups:
     print group
+    demo_writer.writerow(group)
 
-print resort_dic
-print country_dic
