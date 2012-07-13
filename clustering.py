@@ -43,13 +43,6 @@ for i in range(len(k_means_labels)):
 for i in range(n_clusters):
     output_file = 'clustering/%s.txt' % i
     numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
-    # with open(output_file, 'w') as of:
-    #     for item in groups[i]:
-    #         of.write(str(item) + '\n')
-# print k_means_labels
-# for l in k_means_labels:
-#     print l,
-# print k_means_cluster_centers
 
 # conduct dbscan clustering
 # D = distance.squareform(distance.pdist(da_array)) # distance
