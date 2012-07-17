@@ -27,7 +27,7 @@ for n_clusters in range(1, 21):
     k_means = KMeans(k=n_clusters)
     k_means.fit(da_array)
     labels = k_means.labels_
-    k_means_cluster_centers = k_means.cluster_centers_
+    centers = k_means.cluster_centers_
     inertia = k_means.inertia_
     print '%s, %s' % (n_clusters, inertia)
     # create a list of list, each list contains items match to label l
