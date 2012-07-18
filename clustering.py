@@ -5,10 +5,10 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN
 
 # load demo data
-demo_reader = csv.reader(open('demographic/2011_demo.csv'))
+demo_reader = csv.reader(open('demographic/2011_demo_normalized.csv'))
 demos = []
 for row in demo_reader:
-    d = [int(field) for field in row]
+    d = [float(field) for field in row]
     demos.append(d)
 
 # load attendance data
@@ -21,25 +21,25 @@ for row in demo_reader:
 # assert(len(demos) == len(attendances))
 # demo_att = [demos[i] + attendances[i] for i in range(len(demos))]
 
+n_clusters = 5
 da_array = numpy.array(demos)
 # conduct kmeans clustering
-for n_clusters in range(1, 21):
-    k_means = KMeans(k=n_clusters)
-    k_means.fit(da_array)
-    labels = k_means.labels_
-    centers = k_means.cluster_centers_
-    inertia = k_means.inertia_
-    print '%s, %s' % (n_clusters, inertia)
-    # create a list of list, each list contains items match to label l
-    groups = [[] for i in range(n_clusters)]
-    # append da_array to groups according to label
-    for i in range(len(labels)):
-        label = labels[i]
-        groups[label].append(da_array[i])
-    # output the groups to file
-    for i in range(n_clusters):
-        output_file = 'clustering/%s.txt' % i
-        numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
+k_means = KMeans(k=n_clusters)
+k_means.fit(da_array)
+labels = k_means.labels_
+centers = k_means.cluster_centers_
+inertia = k_means.inertia_
+print '%s, %s' % (n_clusters, inertia)
+# create a list of list, each list contains items match to label l
+groups = [[] for i in range(n_clusters)]
+# append da_array to groups according to label
+for i in range(len(labels)):
+    label = labels[i]
+    groups[label].append(da_array[i])
+# output the groups to file
+for i in range(n_clusters):
+    output_file = 'clustering/%s.txt' % i
+    numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
 
 # # conduct dbscan clustering
 # D = distance.squareform(distance.pdist(da_array)) # distance

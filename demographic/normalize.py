@@ -9,8 +9,8 @@ for line in lines:
     # for each field, if it's bigger than current value, update the max list
     assert len(line) == len(max_list)
     for i in range(len(line)):
-        if line[i] > max_list[i]:
-            max_list[i] = line[i]
+        if float(line[i]) > float(max_list[i]):
+            max_list[i] = float(line[i])
 print max_list
 
 # second pass: divide all field by max value; also output to csv file

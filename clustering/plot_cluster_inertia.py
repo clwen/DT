@@ -12,4 +12,5 @@ print clusters
 print inertias
 
 pylab.plot(clusters, inertias)
+pylab.savefig('output.png')
 pylab.show()
