@@ -5,10 +5,15 @@ from scipy.spatial import distance
 from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN
 
+# nominal fields: resort (3), country (7)
+nominal_fields = [3, 7]
+
 def demo_distance(vec1, vec2):
     assert len(vec1) == len(vec2)
     s = 0.0
     for i in range(len(vec1)):
+        if i in nominal_fields:
+            s += 1.0 if vec1[i] != vec2[i] else 0.0
         s += pow((vec1[i] - vec2[i]), 2)
     s = math.sqrt(s)
     return s
@@ -53,24 +58,17 @@ if __name__ == '__main__':
     #     numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
 
     # conduct dbscan clustering
-    D2 = distance.squareform(distance.pdist(da_array)) # distance
+    # D2 = distance.squareform(distance.pdist(da_array)) # distance
     # initialize D: matrix n by n where n is number of row in test data
     n = len(da_array)
     D = [[0.0 for i in range(n)] for j in range(n)]
     D = numpy.array(D)
-    print type(D)
-    print D.shape
     for i in range(n):
         for j in range(n):
             print i, j
             D[i][j] = demo_distance(da_array[i], da_array[j])
-    print D
-    # print D.shape
-    # S = 1 - (D / numpy.max(D)) # similarity
-    # print S
-    # print type(S)
-    # print S.shape
-    # db = DBSCAN().fit(S, eps=0.95, min_samples=5)
+    S = 1 - (D / numpy.max(D)) # similarity
+    # db = DBSCAN().fit(S, eps=0.95, min_samples=10)
     # labels = db.labels_
     # label_list = []
     # for label in labels:
