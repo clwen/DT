@@ -20,7 +20,7 @@ def demo_distance(vec1, vec2):
 
 if __name__ == '__main__':
     # load demo data
-    demo_reader = csv.reader(open('demographic/2011_demo_small.csv'))
+    demo_reader = csv.reader(open('demographic/2011_demo.csv'))
     demos = []
     for row in demo_reader:
         d = [float(field) for field in row]
@@ -68,26 +68,27 @@ if __name__ == '__main__':
             print i, j
             D[i][j] = demo_distance(da_array[i], da_array[j])
     S = 1 - (D / numpy.max(D)) # similarity
-    # db = DBSCAN().fit(S, eps=0.95, min_samples=10)
-    # labels = db.labels_
-    # label_list = []
-    # for label in labels:
-    #     l = int(label)
-    #     if l not in label_list:
-    #         label_list.append(l)
-    #     print label,
-    # label_list.sort()
-    # print label_list
-    # if label_list[0] == -1: # if noise presents, remove it from list
-    #     label_list = label_list[1:]
-    # print label_list
-    # # create a list of list, each list contains items match to label l
-    # groups = [[] for i in range(len(label_list))]
-    # # traverse labels again, append da_array according to label
-    # for i in range(len(labels)):
-    #     l = int(labels[i])
-    #     groups[l].append(da_array[i])
-    # # output the groups to file
-    # for i in range(len(groups)):
-    #     output_file = 'clustering/%s.txt' % i
-    #     numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
+    print S
+    db = DBSCAN().fit(S, eps=0.95, min_samples=20)
+    labels = db.labels_
+    label_list = []
+    for label in labels:
+        l = int(label)
+        if l not in label_list:
+            label_list.append(l)
+        print label,
+    label_list.sort()
+    print label_list
+    if label_list[0] == -1: # if noise presents, remove it from list
+        label_list = label_list[1:]
+    print label_list
+    # create a list of list, each list contains items match to label l
+    groups = [[] for i in range(len(label_list))]
+    # traverse labels again, append da_array according to label
+    for i in range(len(labels)):
+        l = int(labels[i])
+        groups[l].append(da_array[i])
+    # output the groups to file
+    for i in range(len(groups)):
+        output_file = 'clustering/%s.txt' % i
+        numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
