@@ -40,7 +40,7 @@ def load_data_array():
 
     return da_array
 
-def kmeans_clustering():
+def kmeans_clustering(da_array):
     n_clusters = 6
     # conduct kmeans clustering
     k_means = KMeans(k=n_clusters)
@@ -60,11 +60,7 @@ def kmeans_clustering():
         output_file = 'clustering/%s.txt' % i
         numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
 
-if __name__ == '__main__':
-    da_array = load_data_array()
-
-    # kmeans_clustering(da_array)
-
+def dbscan_clustering(da_array):
     # conduct dbscan clustering
     # D2 = distance.squareform(distance.pdist(da_array)) # distance
     # initialize D: matrix n by n where n is number of row in test data
@@ -100,3 +96,10 @@ if __name__ == '__main__':
     # for i in range(len(groups)):
     #     output_file = 'clustering/%s.txt' % i
     #     numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
+
+if __name__ == '__main__':
+    da_array = load_data_array()
+
+    # kmeans_clustering(da_array)
+    dbscan_clustering(da_array)
+
