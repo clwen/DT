@@ -18,7 +18,7 @@ def demo_distance(vec1, vec2):
     s = math.sqrt(s)
     return s
 
-def load_data_array():
+def load_data():
     # load demographic data
     demo_reader = csv.reader(open('demographic/2011_demo_small.csv'))
     demos = []
@@ -39,6 +39,18 @@ def load_data_array():
     # demo_att = [demos[i] + attendances[i] for i in range(len(demos))]
 
     return da_array
+
+def load_date_device():
+    dd_array = []
+    # load csv file
+    dd_reader = csv.reader(open('demographic/2011_am.csv'))
+    lines = list(dd_reader)
+    lines = lines[1:] # skip headers
+    for line in lines:
+        date = line[0]
+        device = line[2]
+        dd_array.append([date, device])
+    return dd_array
 
 def kmeans_clustering(da_array):
     n_clusters = 6
@@ -98,8 +110,10 @@ def dbscan_clustering(da_array):
     #     numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
 
 if __name__ == '__main__':
-    da_array = load_data_array()
+    da_array = load_data() # data array
+    dd_array = load_date_device() # date and device array: dd_array
+    print dd_array
 
     # kmeans_clustering(da_array)
-    dbscan_clustering(da_array)
+    # dbscan_clustering(da_array)
 
