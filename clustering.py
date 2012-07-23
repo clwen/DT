@@ -18,9 +18,9 @@ def demo_distance(vec1, vec2):
     s = math.sqrt(s)
     return s
 
-if __name__ == '__main__':
-    # load demo data
-    demo_reader = csv.reader(open('demographic/2011_demo.csv'))
+def load_data_array():
+    # load demographic data
+    demo_reader = csv.reader(open('demographic/2011_demo_small.csv'))
     demos = []
     for row in demo_reader:
         d = [float(field) for field in row]
@@ -38,24 +38,32 @@ if __name__ == '__main__':
     # assert(len(demos) == len(attendances))
     # demo_att = [demos[i] + attendances[i] for i in range(len(demos))]
 
-    # n_clusters = 6
-    # # conduct kmeans clustering
-    # k_means = KMeans(k=n_clusters)
-    # k_means.fit(da_array)
-    # labels = k_means.labels_
-    # centers = k_means.cluster_centers_
-    # inertia = k_means.inertia_
-    # print '%s, %s' % (n_clusters, inertia)
-    # # create a list of list, each list contains items match to label l
-    # groups = [[] for i in range(n_clusters)]
-    # # append da_array to groups according to label
-    # for i in range(len(labels)):
-    #     label = labels[i]
-    #     groups[label].append(da_array[i])
-    # # output the groups to file
-    # for i in range(n_clusters):
-    #     output_file = 'clustering/%s.txt' % i
-    #     numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
+    return da_array
+
+def kmeans_clustering():
+    n_clusters = 6
+    # conduct kmeans clustering
+    k_means = KMeans(k=n_clusters)
+    k_means.fit(da_array)
+    labels = k_means.labels_
+    centers = k_means.cluster_centers_
+    inertia = k_means.inertia_
+    print '%s, %s' % (n_clusters, inertia)
+    # create a list of list, each list contains items match to label l
+    groups = [[] for i in range(n_clusters)]
+    # append da_array to groups according to label
+    for i in range(len(labels)):
+        label = labels[i]
+        groups[label].append(da_array[i])
+    # output the groups to file
+    for i in range(n_clusters):
+        output_file = 'clustering/%s.txt' % i
+        numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
+
+if __name__ == '__main__':
+    da_array = load_data_array()
+
+    # kmeans_clustering(da_array)
 
     # conduct dbscan clustering
     # D2 = distance.squareform(distance.pdist(da_array)) # distance
@@ -89,6 +97,6 @@ if __name__ == '__main__':
         l = int(labels[i])
         groups[l].append(da_array[i])
     # output the groups to file
-    for i in range(len(groups)):
-        output_file = 'clustering/%s.txt' % i
-        numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
+    # for i in range(len(groups)):
+    #     output_file = 'clustering/%s.txt' % i
+    #     numpy.savetxt(output_file, groups[i], fmt='%1d', delimiter=',')
