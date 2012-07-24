@@ -20,7 +20,7 @@ def demo_distance(vec1, vec2):
 
 def load_data():
     # load demographic data
-    demo_reader = csv.reader(open('demographic/2011_demo.csv'))
+    demo_reader = csv.reader(open('demographic/2011_att.csv'))
     demos = []
     for row in demo_reader:
         d = [float(field) for field in row]
@@ -58,7 +58,7 @@ def load_date_device():
     return dd_array
 
 def kmeans_clustering(da_array):
-    n_clusters = 6
+    n_clusters = 3
     # conduct kmeans clustering
     k_means = KMeans(k=n_clusters)
     k_means.fit(da_array)
@@ -70,12 +70,14 @@ def kmeans_clustering(da_array):
     groups = [[] for i in range(n_clusters)]
     # append da_array to groups according to label
     for i in range(len(labels)):
-        label = labels[i]
-        groups[label].append(da_array[i])
+        l = labels[i]
+        # groups[label].append(da_array[i])
+        groups[l].append(dd_array[i] + list(da_array[i].astype(str)))
     # output the groups to file
     for i in range(n_clusters):
         output_file = 'clustering/%s.txt' % i
-        numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
+        # numpy.savetxt(output_file, groups[i], fmt='%3.3f', delimiter=',')
+        output_to_file(output_file, groups[i])
 
 def dbscan_clustering(da_array):
     # conduct dbscan clustering
@@ -90,7 +92,7 @@ def dbscan_clustering(da_array):
             D[i][j] = demo_distance(da_array[i], da_array[j])
     S = 1 - (D / numpy.max(D)) # similarity
     print S
-    db = DBSCAN().fit(S, eps=0.95, min_samples=10)
+    db = DBSCAN().fit(S, eps=0.95, min_samples=5)
     labels = db.labels_
     label_list = []
     for label in labels:
@@ -119,6 +121,6 @@ if __name__ == '__main__':
     da_array = load_data() # data array
     dd_array = load_date_device() # date and device array: dd_array
 
-    # kmeans_clustering(da_array)
-    dbscan_clustering(da_array)
+    kmeans_clustering(da_array)
+    # dbscan_clustering(da_array)
 

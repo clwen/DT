@@ -1,7 +1,7 @@
 import csv
 import pylab
 
-filename = 'cluster_inertia.csv'
+filename = 'inertia.csv'
 csv_reader = csv.reader(open(filename))
 clusters = []
 inertias = []
