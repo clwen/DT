@@ -21,11 +21,11 @@ def demo_distance(vec1, vec2):
 
 def load_data():
     # load demographic data
-    demo_reader = csv.reader(open('demographic/2011_demo.csv'))
-    demos = []
-    for row in demo_reader:
-        d = [float(field) for field in row]
-        demos.append(d)
+    # demo_reader = csv.reader(open('demographic/2011_demo_normalized.csv'))
+    # demos = []
+    # for row in demo_reader:
+    #     d = [float(field) for field in row]
+    #     demos.append(d)
 
     # load attendance data
     att_reader = csv.reader(open('demographic/2011_att.csv'))
@@ -34,9 +34,9 @@ def load_data():
         a = [int(field) for field in row]
         attendances.append(a)
     
-    assert(len(demos) == len(attendances))
-    demo_att = [demos[i] + attendances[i] for i in range(len(demos))]
-    da_array = numpy.array(demo_att)
+    # assert(len(demos) == len(attendances))
+    # demo_att = [demos[i] + attendances[i] for i in range(len(demos))]
+    da_array = numpy.array(attendances)
 
     return da_array
 
@@ -91,7 +91,7 @@ def dbscan_clustering(da_array):
             D[i][j] = demo_distance(da_array[i], da_array[j])
     S = 1 - (D / numpy.max(D)) # similarity
     print S
-    db = DBSCAN().fit(S, eps=0.95, min_samples=10)
+    db = DBSCAN().fit(S, eps=0.95, min_samples=15)
     labels = db.labels_
     label_list = []
     for label in labels:
@@ -119,6 +119,6 @@ if __name__ == '__main__':
     da_array = load_data() # data array
     dd_array = load_date_device() # date and device array: dd_array
 
-    # kmeans_clustering(da_array)
-    dbscan_clustering(da_array)
+    kmeans_clustering(da_array)
+    # dbscan_clustering(da_array)
 
