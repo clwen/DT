@@ -1,8 +1,11 @@
 import csv
 import numpy
 from sklearn import svm
+from sklearn import tree
 from sklearn import datasets
 from sklearn import cross_validation
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
 
 # import demo data from file
 demo_reader = csv.reader(open('demographic/2011_demo_normalized.csv'))
@@ -28,7 +31,10 @@ n_samples = len(demos)
 for i in range(att_dim):
     print 'predicting venue %s' % i
     venue = atts[i]
-    clf = svm.SVC(gamma=0.001, C=100.0)
+    # clf = GaussianNB()
+    # clf = svm.SVC(gamma=0.001, C=100.0)
+    # clf = tree.DecisionTreeClassifier()
+    clf = RandomForestClassifier(n_estimators=10)
     kf = cross_validation.KFold(n_samples, 10, indices=False)
     scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf)
     print '     %s' % scores
