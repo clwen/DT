@@ -2,6 +2,7 @@ import csv
 import numpy
 from sklearn import svm
 from sklearn import datasets
+from sklearn import cross_validation
 
 # import demo data from file
 demo_reader = csv.reader(open('demographic/2011_demo_normalized.csv'))
@@ -23,17 +24,10 @@ for line in lines:
 
 # for each venue, test the prediction accuracy
 accs = []
+n_samples = len(demos)
 for i in range(att_dim):
     print 'predicting venue %s' % i
     venue = atts[i]
-    classifier = svm.SVC(gamma=0.001, C=100.0)
-    classifier = classifier.fit(demos[:-130], venue[:-130])
-    prediction = classifier.predict(demos[-130:])
-    matched = 0.0
-    for i in range(130):
-        if prediction[i] == venue[i]:
-            matched += 1
-    acc = matched / 130.0
-    print ' accuracy: %s' % acc
-    accs.append(acc)
-print 'average accuracy: %s' % (sum(accs) / len(accs))
+    clf = svm.SVC(gamma=0.001, C=100.0)
+    scores = cross_validation.cross_val_score(clf, demos, venue, cv=10)
+    print scores
