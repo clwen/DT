@@ -29,16 +29,12 @@ for line in lines:
 accs = []
 n_samples = len(demos)
 for i in range(att_dim):
-    print 'predicting venue %s' % i
     venue = atts[i]
     # clf = GaussianNB()
-    # clf = svm.SVC(gamma=0.001, C=100.0)
+    clf = svm.SVC(gamma=0.001, C=100.0)
     # clf = tree.DecisionTreeClassifier()
-    clf = RandomForestClassifier(n_estimators=10)
+    # clf = RandomForestClassifier(n_estimators=10)
     kf = cross_validation.KFold(n_samples, 10, indices=False)
     scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf)
-    print '     %s' % scores
-    print '     %s' % scores.mean()
-    accs.append(scores.mean())
-print 'accuracies from all venues: %s' % accs
-print 'average of accuracies: %s' % (sum(accs) / len(accs))
+    sc_list = list(scores.astype('|S5'))
+    print ', '.join(sc_list)
