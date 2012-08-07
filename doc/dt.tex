@@ -1,7 +1,7 @@
 \title{DTour Data Analysis}
 \author{
     Chung-Lin Wen \\
-    Research Intern, Summer 2012 \\
+    Research Intern, Summer 2012, Disney Research Boston \\
 }
 \date{\today}
 
@@ -15,10 +15,16 @@ In this report, I will explain what progress I have made on the DTour project. T
 \end{abstract}
 
 \section{Introduction}
-This is time for all good men to come to the aid of their party!
+DTour is a project that aim at providing better them park experience by conducting load-balancing techniques. To achieve this, several researches have to be done. First, to under stand the tourists behaviour in the theme parks, we conduct experiments by collecting tourists locations, in the form of GPS fixes. The noisy GPS fixes need to be transfer to venue attendance information for further usage. This compose the first part of the work.
+
+Second, it will be helpful if we can classify groups of tourists into certain "personas", so that we know which venues they will mostly interested in. We can further utilized this knowledge to deliever the most relevant incentives while avoid spamming tourits with unhelpful coupous.
+
+Finally, similar to the second paragraph, it would be even more desirable if we can use some characteristics to predict the venue attendance behaviour. By now, the system uses demographic data to predict the venue attendance behaviour. However, it can also be extend to use other combination for the prediction. For instance, demographic data can be combined with real-time venue attendance data to predict the tourists behaviour in the rest of the day.
 
 \section{GPS to Venue Attendance}\label{gps_venue}
-A much longer \LaTeXe{} example. 
+The GPS data is recorded in longitude and latitude. It has to be transofmed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
+
+The basic idea behind our algorithm is to grow 
 
 \section{Clustering}\label{clustering}
 We use KMeans and DBSCAN \cite{Ester96} to do the clustering.
@@ -27,7 +33,7 @@ We use KMeans and DBSCAN \cite{Ester96} to do the clustering.
 We worked hard, and achieved very little.
 
 \section{Future Work}\label{future_work}
-2012 data. Most useful feature for prediction
+Hidden Markov Model for GPS fixes to venue attendance decoding. Apply low-pass filter to noisy GPS data, such as Kalman filter. Most useful feature for prediction. 2012 data. 
 
 \bibliographystyle{abbrv}
 \bibliography{reference}
