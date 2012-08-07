@@ -1,7 +1,7 @@
 \title{DTour Data Analysis}
 \author{
     Chung-Lin Wen \\
-    Research Intern, Summer 2012, Disney Research Boston \\
+    Research Intern, Disney Research Boston \\
 }
 \date{\today}
 
@@ -11,10 +11,12 @@
 \maketitle
 
 \begin{abstract}
+
 In this report, I will explain what progress I have made on the DTour project. The work can be summarized in three parts: tarnsferring GPS fixes data to venue attendance information, clustering demographic data and venue attendance data, and using demographic data to predict the venue attendace behaviour.
 \end{abstract}
 
 \section{Introduction}
+
 DTour is a project that aim at providing better them park experience by conducting load-balancing techniques. To achieve this, several researches have to be done. First, to under stand the tourists behaviour in the theme parks, we conduct experiments by collecting tourists locations, in the form of GPS fixes. The noisy GPS fixes need to be transfer to venue attendance information for further usage. This compose the first part of the work.
 
 Second, it will be helpful if we can classify groups of tourists into certain "personas", so that we know which venues they will mostly interested in. We can further utilized this knowledge to deliever the most relevant incentives while avoid spamming tourits with unhelpful coupous.
@@ -24,10 +26,10 @@ Finally, similar to the second paragraph, it would be even more desirable if we 
 \section{GPS to Venue Attendance}\label{gps_venue}
 The GPS data is recorded in longitude and latitude. It has to be transofmed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
 
-The basic idea behind our algorithm is to grow 
+The basic idea behind our algorithm is to grow an area $A$ from the known "geofence" $G$ by a distance $l$, which mark the venue location and area. We then traverse each GPS fixes, see if they are lying inside the grown area $A_v$ of certain venue or not. We then examine whether there are consecutive GPS fixes that spent a period $t$ more than a pre-defined threshold $\tau$, if so, we conclude the gruop attended the venue. In the current setting, we found that parameters $15$ meters for $l$ and $3$ minutes for $\tau$ yields results that match our expectation.
 
 \section{Clustering}\label{clustering}
-We use KMeans and DBSCAN \cite{Ester96} to do the clustering.
+We then cluster 
 
 \section{Prediction}\label{prediction}
 We worked hard, and achieved very little.
