@@ -39,8 +39,10 @@ However, in some fields, Euclidean distance doesn't make sense. For instance, in
 Both the implementations of KMeans and DBSCAN (also the classification algorithms of Section \ref{prediction}) use the Python library Scikits Learn \cite{sklearn}.
 
 \section{Prediction}\label{prediction}
-We worked hard, and achieved very little.
-just try and try and try
+
+In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in the following table.
+
+As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
 
 \section{Future Work}\label{future_work}
 Hidden Markov Model for GPS fixes to venue attendance decoding. Apply low-pass filter to noisy GPS data, such as Kalman filter. Most useful feature for prediction. 2012 data. 
