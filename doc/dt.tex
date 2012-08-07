@@ -23,6 +23,8 @@ Second, it will be helpful if we can classify groups of tourists into certain "p
 
 Finally, similar to the second paragraph, it would be even more desirable if we can use some characteristics to predict the venue attendance behaviour. By now, the system uses demographic data to predict the venue attendance behaviour. However, it can also be extend to use other combination for the prediction. For instance, demographic data can be combined with real-time venue attendance data to predict the tourists behaviour in the rest of the day.
 
+In the following sections, we will discuss each part respectively. The report then summarized with future works.
+
 \section{GPS to Venue Attendance}\label{gps_venue}
 
 The GPS data is recorded in longitude and latitude. It has to be transofmed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
@@ -45,7 +47,16 @@ In the current setting, demographic data are used to predict the venue attendanc
 As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
 
 \section{Future Work}\label{future_work}
-Hidden Markov Model for GPS fixes to venue attendance decoding. Apply low-pass filter to noisy GPS data, such as Kalman filter. Most useful feature for prediction. 2012 data. 
+
+Several possible future directions are listed here. First, to reduce the noise in GPS data we acquired, some noise filtering techniques can be applied, such as temporal Kalman filter.
+
+Second, some heuristics can be used to improve the current GPS to attendance method. For instance, by observation, the venue attendance are not necessarily formed by totally consecutive point-in-polygon fixes due to the noise. Therefore, we can improve the method by allowing a gap of one or two points that are not in the polygon but still counted as consecutive.
+
+In addition, we can use more sophiscated algorithm to model the GPS to venue transformation, such as Hidden Markov Model (HMM).
+
+Another interesting experiment to do is to use feature selection algorithms to discover some most useful features when predicting a certain venue. For instance, if we know couples are most likely to attend "Tower of Terror", while families with children under 12 are most likely to attend "Toy Soldiers Parachute Drop", we can use this knowledge while distributing coupons without explicitly doing the machine learning or clustering in a real-time fashion.
+
+Finally the current experiments are based on 2011 data, it would be desirable to do the experiment on other data (currently 2012 are also availble). 
 
 \bibliographystyle{abbrv}
 \bibliography{reference}
