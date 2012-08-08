@@ -16,6 +16,7 @@ avgs = []
 for line in lines:
     accs = [float(s) for s in line]
     avg = sum(accs) / len(accs)
+    avg = str(avg * 100) + '\%'
     avgs.append(avg)
 
 # print formatted output
