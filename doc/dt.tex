@@ -6,6 +6,7 @@
 \date{\today}
 
 \documentclass[12pt]{article}
+\usepackage{graphicx}
 
 \begin{document}
 \maketitle
@@ -34,7 +35,14 @@ The basic idea behind our algorithm is to grow an area $A$ from the known "geofe
 $1369$ points and $21$ venues from 2011 experiment are investigated.
 
 \section{Clustering}\label{clustering}
-Demographic data and venue attedance are then clustered. We encode the demographic data and venue attendence into numeric vectors with each column normalized from $0$ to $1$. We then applied the KMeans clustering algorithm \cite{Lloyd82} to the data. We determine the optimal $k$ by plotting the distortion function and choose several $k$ near the elbow point, where the marginal decrease of distortion function become smaller. 
+Demographic data and venue attedance are then clustered. We encode the demographic data and venue attendence into numeric vectors with each column normalized from $0$ to $1$. We then applied the KMeans clustering algorithm \cite{Lloyd82} to the data. We determine the optimal $k$ by plotting the distortion function and choose several $k$ near the elbow point, where the marginal decrease of distortion function become smaller. For example, Figure \ref{kmeans-k} is an instance of distortion function in different $k$ plotted. In this example, the figure suggest that optimal $k$ may be around $3$.
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.55]{figs/distortion.eps}
+\caption{Distortion function for diffrent $k$ in KMeans algorithm}
+\label{kmeans-k}
+\end{figure}
 
 However, in some fields, Euclidean distance doesn't make sense. For instance, in the nationality field, if we encode USA by $1$, China for $2$, and UK for $3$, doesn't mean that USA is "closer" to China than USA to UK. Therefore, a density-based algorithm DBSCAN \cite{Ester96} are also applied. In DBSCAN, we define similar function for fields (in 2011 data, nationality and resorts tourists living) that don't apply to Euclidean distance as the following: return $0$ if they are identical, else return $1$.
 
