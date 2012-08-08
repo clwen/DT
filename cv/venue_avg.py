@@ -4,6 +4,8 @@ from pprint import pprint
 
 # read name of venues
 names = [s[4:-4] for s in os.listdir('../GeoFences/15M') if s.endswith('.mif')]
+names = [name.replace('&', '\\&') for name in names] # replace & for latex usage
+names = [name.replace('\'', '\\\'') for name in names] # replace ' for latex usage
 
 # read accuracies
 acc_reader = csv.reader(open('svm.csv'))

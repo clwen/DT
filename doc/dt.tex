@@ -55,13 +55,13 @@ Both the implementations of KMeans and DBSCAN (also the classification algorithm
 
 \section{Prediction}\label{prediction}
 
-In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in Table \ref{class-accu}.
+In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in Table \ref{class-accu}. All the accuracies are calculated under a 10-fold k-fold cross validation.
 
 \begin{table}
 \begin{center}
     \begin{tabular}{ | c | c | }
         \hline
-        \textbf {Classfier} & \textbf{Accuracy} \\ \hline
+        \textbf {Classfier} & \textbf{Avg. Accuracy} \\ \hline
         \hline
         Naive Bayes     & 80.62\% \\ \hline
         SVM             & 86.28\% \\ \hline
@@ -72,6 +72,40 @@ In the current setting, demographic data are used to predict the venue attendanc
 \label{class-accu}
 \end{center}
 \end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{ | c | c | }
+        \hline
+        \textbf {Venue} & \textbf{Avg. Accuracy} \\ \hline
+        \hline
+        Aladdin The Flying Carpet Over Agrabah & 0.7476 \\ \hline
+        Animagique & 0.9474 \\ \hline
+        Armageddon & 0.8949 \\ \hline
+        Art of Disney Animation & 0.8172 \\ \hline
+        Backlot Express & 0.8416 \\ \hline
+        Cars Quatre Roues Rallye & 0.874 \\ \hline
+        Cinemagique & 0.9372 \\ \hline
+        Crush\'s Coaster & 0.7998 \\ \hline
+        En Coulisse \& Legends of Hollywood & 0.8894 \\ \hline
+        Food \& Beverage & 0.8085 \\ \hline
+        Front Gate & 0.9196 \\ \hline
+        Guest Services & 0.785 \\ \hline
+        Moteurs Action & 0.7651 \\ \hline
+        RC Racer & 0.9012 \\ \hline
+        Rock\'n Roller Coaster & 0.9068 \\ \hline
+        Slinky Dog Zig Zag Spin & 0.8834 \\ \hline
+        Snitch Live, Playhouse Disney & 0.9462 \\ \hline
+        Studio Tram Tour & 0.8103 \\ \hline
+        Studios Store & 0.9623 \\ \hline
+        Tower of Terror & 0.761 \\ \hline
+        Toy Soldiers Parachute Drop & 0.9109 \\ \hline
+    \end{tabular}
+\caption{Accuracy of different venues under SVM classification}
+\label{venue-accu}
+\end{center}
+\end{table}
+
 
 As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
 
