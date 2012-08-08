@@ -30,9 +30,14 @@ In the following sections, we will discuss each part respectively. The report th
 
 The GPS data is recorded in longitude and latitude. It has to be transofmed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
 
-The basic idea behind our algorithm is to grow an area $A$ from the known "geofence" $G$ by a distance $l$, which mark the venue location and area. We then traverse each GPS fixes, see if they are lying inside the grown area $A_v$ of certain venue or not. We then examine whether there are consecutive GPS fixes that spent a period $t$ more than a pre-defined threshold $\tau$, if so, we conclude the gruop attended the venue. In the current setting, we found that parameters $15$ meters for $l$ and $3$ minutes for $\tau$ yields results that match our expectation.
+The basic idea behind our algorithm is to grow an area $A$ from the known "geofence" $G$ by a distance $l$, which mark the venue location and area. We then traverse each GPS fixes, see if they are lying inside the grown area $A_v$ of certain venue or not. We then examine whether there are consecutive GPS fixes that spent a period $t$ more than a pre-defined threshold $\tau$, if so, we conclude the gruop attended the venue. In the current setting, we found that parameters $15$ meters for $l$ and $3$ minutes for $\tau$ yields results that match our expectation. Figure \ref{fixes-fences} illustrates the GPS fixes and Geofences. Currently, $1369$ points and $21$ venues from 2011 experiment are investigated.  
 
-$1369$ points and $21$ venues from 2011 experiment are investigated.
+\begin{figure}
+\centering
+    \includegraphics[scale=0.5]{figs/fixes-fences.eps}
+\caption{GPS fixes and Geofences in the visualization program}
+\label{fixes-fences}
+\end{figure}
 
 \section{Clustering}\label{clustering}
 Demographic data and venue attedance are then clustered. We encode the demographic data and venue attendence into numeric vectors with each column normalized from $0$ to $1$. We then applied the KMeans clustering algorithm \cite{Lloyd82} to the data. We determine the optimal $k$ by plotting the distortion function and choose several $k$ near the elbow point, where the marginal decrease of distortion function become smaller. For example, Figure \ref{kmeans-k} is an instance of distortion function in different $k$ plotted. In this example, the figure suggest that optimal $k$ may be around $3$.
