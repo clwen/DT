@@ -57,6 +57,8 @@ Both the implementations of KMeans and DBSCAN (also the classification algorithm
 
 In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in Table \ref{class-accu}. All the accuracies are calculated under a 10-fold k-fold cross validation.
 
+As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
+
 \begin{table}
 \begin{center}
     \begin{tabular}{ | c | c | }
@@ -72,6 +74,8 @@ In the current setting, demographic data are used to predict the venue attendanc
 \label{class-accu}
 \end{center}
 \end{table}
+
+Accuracies for different venue are also not identical. The accuraries ranging from $74.76\%$ to $96.23\%$ as shown in the Figure \ref{venue-accu}. This is not a surprising result, since the prediction power of demographic are not the same for different venue.
 
 \begin{table}
 \begin{center}
@@ -105,9 +109,6 @@ In the current setting, demographic data are used to predict the venue attendanc
 \label{venue-accu}
 \end{center}
 \end{table}
-
-
-As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
 
 \section{Future Work}\label{future_work}
 
