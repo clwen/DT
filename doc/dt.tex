@@ -42,7 +42,23 @@ Both the implementations of KMeans and DBSCAN (also the classification algorithm
 
 \section{Prediction}\label{prediction}
 
-In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in the following table.
+In the current setting, demographic data are used to predict the venue attendance. For each venue and a given set of demographic data from a specific group, we train a classfier to predict the group will attend the venue or not. Four classification algorithms are used: Naive Bayes, SVM, Decision Tree, and Random Forest. We average the precision of each algorithm across each venue and the result can be summarized in Table \ref{class-accu}.
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{ | c | c | }
+        \hline
+        \textbf {Classfier} & \textbf{Accuracy} \\ \hline
+        \hline
+        Naive Bayes     & 80.62\% \\ \hline
+        SVM             & 86.28\% \\ \hline
+        Decision Tree   & 75.41\% \\ \hline
+        Random Forest   & 85.11\% \\ \hline
+    \end{tabular}
+\caption{Accuracy of different classification algorithms}
+\label{class-accu}
+\end{center}
+\end{table}
 
 As we can see from the result, SVM yields the best precision and all of the classifiers generate significantly better result than base-line, which is around $50\%$. 
 
