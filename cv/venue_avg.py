@@ -1,6 +1,9 @@
 import csv
+import os
+from pprint import pprint
 
 # read name of venues
+names = [s[4:-4] for s in os.listdir('../GeoFences/15M') if s.endswith('.mif')]
 
 # read accuracies
 acc_reader = csv.reader(open('svm.csv'))
@@ -9,8 +12,11 @@ n_venue = len(lines) # number of lines imply the number of venues
 n_test = len(lines[0])
 avgs = []
 for line in lines:
-    print line
     accs = [float(s) for s in line]
     avg = sum(accs) / len(accs)
     avgs.append(avg)
-    print avg
+
+# print formatted output
+assert len(names) == len(avgs)
+for i in range(n_venue):
+    print '%s & %s \\\\ \\hline' % (names[i], avgs[i])
