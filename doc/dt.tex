@@ -114,13 +114,13 @@ Accuracies for different venue are also not identical. The accuraries ranging fr
 
 Several possible future directions are listed here. First, to reduce the noise in GPS data we acquired, some noise filtering techniques can be applied, such as temporal Kalman filter \cite{Welch95}.
 
-Second, some heuristics can be used to improve the current GPS to attendance method. For instance, by observation, the venue attendance are not necessarily formed by totally consecutive point-in-polygon fixes due to the noise. Therefore, we can improve the method by allowing a gap of one or two points that are not in the polygon but still counted as consecutive.
+Second, some heuristics can be used to improve the current GPS to attendance method. For instance, by observation, the venue attendance are not completely formed by totally consecutive point-in-polygon fixes due to the noise. Therefore, we can improve the method by allowing a gap of one or two points that are not in the polygon but still counted as consecutive.
 
-In addition, we can use more sophiscated algorithm to model the GPS to venue transformation, such as Hidden Markov Model (HMM).
+In addition, we can use a more sophiscated algorithm to model the GPS to venue transformation, such as Hidden Markov Model (HMM).
 
-Another interesting experiment to do is to use feature selection algorithms to discover some most useful features when predicting a certain venue. For instance, if we know couples are most likely to attend "Tower of Terror", while families with children under 12 are most likely to attend "Toy Soldiers Parachute Drop", we can use this knowledge while distributing coupons without explicitly doing the machine learning or clustering in a real-time fashion.
+Another interesting experiment to do is to use feature selection algorithms to discover some of the most useful features when predicting a certain venue. For instance, if we know thrill-seeking couples are most likely to attend "Tower of Terror", while families with children under 12 are most likely to attend "Toy Soldiers Parachute Drop", we can use this knowledge to distribute coupons without explicitly doing the machine learning or clustering in a real-time fashion.
 
-Finally the current experiments are based on 2011 data, it would be desirable to do the experiment on other data (currently 2012 are also availble). 
+Finally the current experiments are based on 2011 data, it would be interesting to apply the experiment on other data.
 
 \bibliographystyle{abbrv}
 \bibliography{reference}
