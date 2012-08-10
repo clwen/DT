@@ -4,6 +4,7 @@ from sklearn import svm
 from sklearn import tree
 from sklearn import datasets
 from sklearn import cross_validation
+from sklearn import metrics
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 
@@ -31,10 +32,10 @@ n_samples = len(demos)
 for i in range(att_dim):
     venue = atts[i]
     # clf = GaussianNB()
-    clf = svm.SVC(gamma=0.001, C=100.0)
+    # clf = svm.SVC(gamma=0.001, C=100.0)
     # clf = tree.DecisionTreeClassifier()
-    # clf = RandomForestClassifier(n_estimators=10)
+    clf = RandomForestClassifier(n_estimators=10)
     kf = cross_validation.KFold(n_samples, 10, indices=False)
-    scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf)
+    scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf, score_func=metrics.f1_score)
     sc_list = list(scores.astype('|S5'))
     print ', '.join(sc_list)
