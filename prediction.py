@@ -36,6 +36,6 @@ for i in range(att_dim):
     # clf = tree.DecisionTreeClassifier()
     clf = RandomForestClassifier(n_estimators=10)
     kf = cross_validation.KFold(n_samples, 10, indices=False)
-    scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf, score_func=metrics.f1_score)
+    scores = cross_validation.cross_val_score(clf, demos, venue, cv=kf)
     sc_list = list(scores.astype('|S5'))
     print ', '.join(sc_list)
