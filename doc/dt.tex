@@ -28,9 +28,9 @@ In the following sections, we will discuss each part respectively. The report th
 
 \section{GPS to Venue Attendance}\label{gps_venue}
 
-The GPS data is recorded in longitude and latitude. It has to be transofmed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
+The GPS data is recorded in longitude and latitude. It has to be transformed into venue attendacne information before it can be used for clustering and prediction. We also get better insights on how tourists travel in the park by conducting the transfering.
 
-The basic idea behind our algorithm is to grow an area $A$ from the known "geofence" $G$ by a distance $l$, which mark the venue location and area. We then traverse each GPS fixes, see if they are lying inside the grown area $A_v$ of certain venue or not. We then examine whether there are consecutive GPS fixes that spent a period $t$ more than a pre-defined threshold $\tau$, if so, we conclude the gruop attended the venue. In the current setting, we found that parameters $15$ meters for $l$ and $3$ minutes for $\tau$ yields results that match our expectation. Figure \ref{fixes-fences} illustrates the GPS fixes and Geofences. Currently, $1369$ points and $21$ venues from 2011 experiment are investigated.  
+The basic idea behind our algorithm is to grow an area $A$ by a distance $l$ from the "geofence", which marks the known venue location and area, recorded in vertex. We then traverse each GPS fixes, see if they are lying inside the grown area $A_v$ of certain venue or not. We then examine whether there are consecutive GPS fixes that spent a duration $t$ more than a pre-defined threshold $\tau$, if so, we conclude that the gruop hsa attendeded the venue. In the current setting, we found that parameters $15$ meters for $l$ and $3$ minutes for $\tau$ yields results that match our expectation. Figure \ref{fixes-fences} illustrates the GPS fixes and Geofences. Currently, $1369$ points and $21$ venues from 2011 experiment are investigated.  
 
 \begin{figure}
 \centering
